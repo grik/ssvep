@@ -1,9 +1,8 @@
-# name: flash.py
+# name: flash_1rectangle.py
 # type: script
 
 from psychopy import visual, core  
 import numpy as np
-import matplotlib.pyplot as plt
 
 ############################################
 #
@@ -17,35 +16,24 @@ win = visual.Window(
     units="deg"
     )
 
-# Create some stimuli.
-rect = visual.Rect(
-    win=win,
-    fillColor='red',
-    lineColor='red',
-    size=20
-    )
-
-# Sinusoidal control version.
-freq = 14
-
-def second2period(second, freq):
-    period = second * freq ** 2
-    return period
-
-# Getting sin value for code consistency clearness.
-def get_sin_val(period, freq):
-    sin_val = np.sin(2 * np.pi * period / float(freq))
-    return sin_val
+# Sinusoidal control frequency.
+freq = 15
 
 start = core.getTime()
 cnt = 0
 while cnt<150:
     second = core.getTime() - start
-    print(second)
-    period = second2period(second, freq)
-    sin_val = get_sin_val(period, freq)
+    sin_val = np.sin(2 * np.pi * second * float(freq))
+    
+    rect = visual.Rect(
+        win=win,
+        fillColor=[sin_val, 0, 0],
+        lineColor=[sin_val, 0, 0],
+        size=20
+        )
+
     if sin_val >= 0:
-        rect.draw()
+        rect.draw() 
     win.flip()
     cnt += 1
 
