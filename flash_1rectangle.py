@@ -17,19 +17,22 @@ win = visual.Window(
     )
 
 # Sinusoidal control frequency.
-freq = 15
+freq = 12
 
 start = core.getTime()
 cnt = 0
 while cnt<150:
     second = core.getTime() - start
-    sin_val = np.sin(2 * np.pi * second * float(freq))
+    sin_val = 0.5+0.5*np.sin(
+        2 * np.pi * second * float(freq)
+        )
     
     rect = visual.Rect(
         win=win,
-        fillColor=[sin_val, 0, 0],
-        lineColor=[sin_val, 0, 0],
-        size=20
+        lineWidth=0.0, 
+        fillColor='red',
+        size=20,
+        opacity=sin_val
         )
 
     if sin_val >= 0:

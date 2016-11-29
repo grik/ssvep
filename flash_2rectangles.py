@@ -33,7 +33,7 @@ while cnt<150:
     rect_one = visual.Rect(
         win=win,
         fillColor='red',
-        lineColor='red',
+        lineWidth=0.0, 
         size=20,
         pos=(-7, 0),
         opacity=sin_val_one
@@ -41,7 +41,7 @@ while cnt<150:
     rect_two = visual.Rect(
         win=win,
         fillColor='blue',
-        lineColor='blue',
+        lineWidth=0.0, 
         size=20,
         pos=(7, 0),
         opacity=sin_val_two
