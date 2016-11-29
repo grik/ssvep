@@ -16,22 +16,6 @@ win = visual.Window(
     units="deg"
     )
 
-# Create some stimuli.
-rect_one = visual.Rect(
-    win=win,
-    fillColor='red',
-    lineColor='red',
-    size=20,
-    pos=(-7, 0)
-    )
-rect_two = visual.Rect(
-    win=win,
-    fillColor='blue',
-    lineColor='blue',
-    size=20,
-    pos=(7, 0)
-    )
-
 # Sinusoidal control version.
 freq_one = 12
 freq_two = 20
