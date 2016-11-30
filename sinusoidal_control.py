@@ -15,19 +15,22 @@ import matplotlib.pyplot as plt
 # First create an "offline" sinusoid.
 #
 freq = 14
-periods = float(freq ** 2)
-values_axis = np.sin(2 * np.pi * np.arange(periods) / freq)
-time_axis = np.arange(periods) / freq**2
+# e.g. 1 second, i.e. 1000 ms
+samples = 1000
+time_axis = np.arange(samples)
+# Get milliseconds.
+time_axis = time_axis / float(1000)
+values_axis = np.sin(2 * np.pi * time_axis * freq)
 
 plt.subplot(211)
 plt.plot(values_axis)
-plt.title('What happens when you will not change x-axis values')
-plt.xlabel('periods [-]')
+plt.title('Unscaled version')
+plt.xlabel('time [ms]')
 plt.ylabel('sin() value [-]')
 
 plt.subplot(212)
 plt.plot(time_axis, values_axis)
-plt.title('The proper one')
+plt.title('As a function of seconds (with millisecond timepoints)')
 plt.xlabel('time [s]')
 plt.ylabel('sin() value [-]')
 plt.show()
@@ -36,33 +39,41 @@ plt.show()
 ############################################
 #
 # Second create an universal millisecond -> sinusoid function
-# value converter.
+# value converter. A simulation of an experimental condions.
 #
 
-# Function to transform current millisecond to periodical value.
-def millisecond2period(millisecond, freq):
-    millisecond /= float(1000)
-    period = millisecond * freq ** 2
-    return period
 
-# Getting sin value for code consistency clearness.
-def get_sin_val(period, freq):
-    sin_val = np.sin(2 * np.pi * period / float(freq))
-    return sin_val
-
+# Sinus values log.
+sin_values = []
 # Above zero - only these sin() values will be stored here.
 above_zero = []
 # Do up to 1000th millisecond, works for (1000, 2000) as well, etc.
-for i in range(1000):
-    period = millisecond2period(i, freq)
-    sin_val = get_sin_val(period, freq)
+for time in range(1000):
+    # Get milliseconds.
+    time /= float(1000)
+    sin_val = np.sin(2 * np.pi * time * float(freq))
+    print(sin_val)
+    sin_values.append(sin_val)
+
     if sin_val >= 0:
         above_zero.append(sin_val)
     else:
         above_zero.append(0)
+sin_values = 0.5 + np.array(sin_values) * 0.5
 
+
+plt.subplot(211)
 plt.plot(above_zero)
 plt.ylim(-1, 1)
+plt.title('Above zero')
 plt.xlabel('time [ms]')
 plt.ylabel('sin() value [-]')
+
+plt.subplot(212)
+plt.plot(sin_values)
+plt.ylim(-1, 1)
+plt.title('Scaled to (0.0, 1.0) range, for e.g. transparency')
+plt.xlabel('time [ms]')
+plt.ylabel('sin() value [-]')
+
 plt.show()
