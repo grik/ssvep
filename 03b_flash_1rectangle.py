@@ -1,4 +1,4 @@
-# name: flash_1rectangle.py
+# name: 03b_flash_1rectangle.py
 # type: script
 
 from psychopy import visual, core  

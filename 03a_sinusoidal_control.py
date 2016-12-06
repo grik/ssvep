@@ -1,4 +1,4 @@
-# name: sinusoidal_control.py
+# name: 03a_sinusoidal_control.py
 # type: script
 
 import numpy as np

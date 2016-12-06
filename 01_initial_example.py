@@ -1,4 +1,5 @@
-from psychopy import visual, core  # import some libraries from PsychoPy
+# import some libraries from PsychoPy
+from psychopy import visual, core
 
 #create a window
 mywin = visual.Window([800,600], monitor="testMonitor", units="deg")
