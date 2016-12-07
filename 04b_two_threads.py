@@ -23,10 +23,10 @@ def data_acquisition():
         sample = board.get_sample(channel=channel, filter=False)
         number = str(sample.id)
         data = str(sample.channel_data[0])
-        # print('%.3d ::: %s' % (id, sample))
+        # print('%.3d ::: %s' % (sample.id, sample.channel_data[0]))
 
         open(filename, 'a').write(','.join([number,
-                                            data))
+                                            data])+'\n')
 
 # Multiprocessing event is a flag (a trigger).
 quit_program = mp.Event()

@@ -20,8 +20,7 @@ for i in range(2500):
     data = str(sample.channel_data[0])
     # print('%.3d ::: %s' % (id, sample))
 
-    open(filename, 'a').write(','.join([number,
-                                        data))
+    open(filename, 'a').write(','.join([number, data])+'\n')
 
 board.disconnect()
 print('Disconnected')

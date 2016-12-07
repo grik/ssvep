@@ -19,25 +19,26 @@ board = bs.BoardManager()
 filename = '/tmp/openbci_example_data.txt'
 
 def data_acquisition():
+    stim = '0'
     while not quit_program.is_set():
         sample = board.get_sample(channel=channel,
                                   filter=False)
         number = str(sample.id)
         data = str(sample.channel_data[0])
-        if stimuli_present.is_set()
-            stim = 1
+        if stimuli_present.is_set():
+            stim = '1'
         else:
-            stim = 0
+            stim = '0'
         #  print('%.3d ::: %.6f ::: %s' % (sample.id,
                                         #  sampe.channel_data[0]
                                         #  stim)
 
         open(filename, 'a').write(','.join([number,
                                             data,
-                                            stim]))
+                                            stim])+'\n')
 
 # Multiprocessing event is a flag (a trigger).
-stimuli_present = np.Event()
+stimuli_present = mp.Event()
 quit_program = mp.Event()
 
 # Define a process.
@@ -59,7 +60,7 @@ print('A subprocess (child porcess) started')
 #
 
 def switch_state(mp_event):
-    if is not mp_event.is_set():
+    if mp_event.is_set() != True:
         mp_event.set()
     else:
         mp_event.clear()
