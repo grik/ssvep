@@ -1,15 +1,23 @@
-# import some libraries from PsychoPy
+"""
+name: 02_rect_example.py
+type: script
+
+Slightly different example: create, draw and expose a rectangle.
+
+"""
+
+# Import some libraries from PsychoPy.
 from psychopy import visual, core
 
-#create a window
+# Create a window.
 mywin = visual.Window([800,600], monitor="testMonitor", units="deg")
 
-#create some stimuli
+# Create some stimuli.
 rect = visual.Rect(win=mywin, fillColor='red', lineColor='red', size=10)
 
-#draw the stimuli and update the window
+# Draw the stimuli and update the window.
 rect.draw()
 mywin.update()
 
-#pause, so you get a chance to see it!
+# Pause, so you get a chance to see it!
 core.wait(5.0)

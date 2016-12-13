@@ -1,13 +1,15 @@
-# name: 03a_sinusoidal_control.py
-# type: script
+"""
+name: 03a_sinusoidal_control.py
+type: script
+
+How to understand sinusoidal control of the SSVEP stimuli.
+
+"""
 
 import numpy as np
 import matplotlib.pyplot as plt
 
-############################################
-#
-# How to understand sinusoidal control of the SSVEP stimuli.
-#
+
 
 
 ############################################

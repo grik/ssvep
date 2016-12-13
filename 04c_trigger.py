@@ -1,5 +1,22 @@
-# name: 04c_trigger.py
-# type: script
+"""
+name: 04c_trigger.py
+type: script
+
+How acquire (and write) data with OpenBCI.
+
+Two processes
+ * parent (main) - SSVEP stimulus display
+ * child (subprocess) - data acquisition and writing
+
+Paret process awaits for user decision: exit or quit to
+terminate te program and finish both processes.
+
+NOVUM:
+type `s` to simulate stimulus appearance.
+Then third column of the written data will be set to 1,
+else (as default) 0 is set.
+
+"""
 
 import multiprocessing as mp
 

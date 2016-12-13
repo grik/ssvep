@@ -1,5 +1,17 @@
-# name: 04b_two_threads.py
-# type: script
+"""
+name: 04b_two_threads.py
+type: script
+
+How acquire (and write) data with OpenBCI.
+
+Two processes
+ * parent (main) - SSVEP stimulus display
+ * child (subprocess) - data acquisition and writing
+
+Paret process awaits for user decision: exit or quit to
+terminate te program and finish both processes.
+
+"""
 
 import multiprocessing as mp
 

@@ -1,5 +1,19 @@
-# name: 04d_stimuli_trigger.py
-# type: script
+"""
+name: 04d_stimuli_trigger.py
+type: script
+
+How acquire (and write) data with OpenBCI.
+
+Two processes
+ * parent (main) - SSVEP stimulus display
+ * child (subprocess) - data acquisition and writing
+
+Present the stimulus and clear it after a couple of seconds.
+Information about when the stimulus was present on the screen
+will be passed to the child process and written to file with
+the data.
+
+"""
 
 import numpy as np
 import multiprocessing as mp
@@ -15,7 +29,7 @@ import pyseeg.modules.board_simple as bs
 #
 
 channel = 0
-board = bs.BoardManager()
+board = bs.BoardManager(port='/dev/ttyUSB0')
 
 # File to write data to.
 filename = '/tmp/openbci_example_data.txt'
@@ -23,17 +37,17 @@ filename = '/tmp/openbci_example_data.txt'
 def data_acquisition():
     stim = '0'
     while not quit_program.is_set():
-        sample = board.get_sample(channel=channel,
-                                  filter=False)
+        sample = board.get_sample(channel=channel)
         number = str(sample.id)
         data = str(sample.channel_data[0])
         if stimuli_present.is_set():
             stim = '1'
         else:
             stim = '0'
-        #  print('%.3d ::: %.6f ::: %s' % (sample.id,
-                                        #  sampe.channel_data[0]
-                                        #  stim)
+
+        # print('%.3d ::: %.6f ::: %s' % (sample.id,
+                                         # sampe.channel_data[0],
+                                         # stim))
 
         open(filename, 'a').write(','.join([number,
                                             data,
@@ -69,7 +83,7 @@ def switch_state(mp_event):
 
 # Create a window.
 # For configuring and debugging the code turn off full screen.
-fullscr = False
+fullscr = True
 win = visual.Window(
     [1200,1000],
     monitor="testMonitor",
@@ -79,21 +93,28 @@ win = visual.Window(
 win.setMouseVisible(False)
 
 # Sinusoidal control frequency.
-freq = 1.5
+freq = 8
 # Color of the rectangle.
-color = '#606a79'
+color = 'red'
 # Position of the rectange, default 0,0 (middle of the screen).
 pos = (0, 0)
 
 start = core.getTime()
+prev_time = start
 cnt = 0
-stim_range = (5, 8)
-while cnt<600:
-    second = core.getTime() - start
-    sin_val = 0.5+0.5*np.sin(2 * np.pi * second * float(freq))
+stim_range = (4, 8)
+stim_start, stim_end = stim_range
+
+quit_second = 10
+
+win.flip()
+
+while True:
+    time_in_seconds = core.getTime() - start
+    sin_val = 0.5+0.5*np.sin(2 * np.pi * time_in_seconds * float(freq))
 
     # If you remove or comment this print, it sould work faster
-    #  print('sec: %.4f; sin: %.4f' % (second, sin_val))
+    #  print('sec: %.4f; sin: %.4f' % (time_in_seconds, sin_val))
     
     rect = visual.Rect(
         win=win,
@@ -104,14 +125,25 @@ while cnt<600:
         pos=pos
         )
 
-    if second > stim_range[0] and second < stim_range[1]:
+    # When to refresh stimuli.
+    if time_in_seconds >= stim_start and time_in_seconds < stim_end:
         rect.draw()
+        win.flip()
+
+    # Setting and clearing the flag, clearing the screen after the stmuli.
+    if prev_time <= stim_start and time_in_seconds > stim_start:
         stimuli_present.set()
-    else:
+    elif prev_time <= stim_end and time_in_seconds > stim_end:
         stimuli_present.clear()
-    win.flip()
+        win.flip()
+
+    if time_in_seconds > quit_second:
+        quit_program.set()
+        break
 
 
+    prev_time = time_in_seconds
     cnt += 1
 
 win.close()
+board.disconnect()

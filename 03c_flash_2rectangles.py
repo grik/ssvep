@@ -1,13 +1,15 @@
-# name: 03c_flash_2rectangles.py
-# type: script
+"""
+name: 03c_flash_2rectangles.py
+type: script
+
+How to control two SSVEP stimuli with a sinusoid.
+
+"""
+
 
 from psychopy import visual, core  
 import numpy as np
 
-############################################
-#
-# How to control a SSVEP stimuli with a sinusoid.
-#
 
 # Create a window.
 # For configuring and debugging the code turn off full screen.
